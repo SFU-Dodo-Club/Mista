@@ -92,8 +92,8 @@ async def play(ctx, url : str):
             #     executable="ffmpeg.exe", source=filename))
             voice.play(discord.FFmpegPCMAudio(ffmpeg
                                               .input(filename)
-                                              .output('out.mp4', ffmpeg_options)
-                                              .run()))
+                                              .output('output.mp4')
+                                             ))
         await ctx.send('**Now playing:** {}'.format(filename))
 
 @client.command(name="leave", help="Mista leaves...")
