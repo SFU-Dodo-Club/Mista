@@ -92,7 +92,7 @@ async def play(ctx, url : str):
             #     executable="ffmpeg.exe", source=filename))
             voice.play(discord.FFmpegPCMAudio(ffmpeg
                                               .input(filename)
-                                              .output('out.mp4', **{'qscale:v': 3})
+                                              .output('out.mp4', ffmpeg_options)
                                               .run()))
         await ctx.send('**Now playing:** {}'.format(filename))
 
