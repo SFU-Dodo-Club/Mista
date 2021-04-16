@@ -120,6 +120,5 @@ async def stop(ctx):
     voice.stop()
 
 if __name__ == "__main__":
-    # client.run(os.environ['TOKEN'])
-    client.run('ODMyNDMyMjQzNzU0NTMyODc0.YHjs8A.UJAv-3wqa9ZnNlOatPpl8UxtmXA')
+    client.run(os.environ['TOKEN'])
 
