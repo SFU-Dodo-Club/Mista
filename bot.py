@@ -88,13 +88,21 @@ async def play(ctx, url : str):
     else:
         async with ctx.typing():
             filename = await YTDLSource.from_url(url, loop=client.loop)
-            # voice.play(discord.FFmpegPCMAudio(
-            #     executable="ffmpeg.exe", source=filename))
-            voice.play(discord.FFmpegPCMAudio(ffmpeg
-                                              .input(filename)
-                                              .output('output.mp4')
-                                             ))
+            #voice.play(discord.FFmpegPCMAudio(, source=filename))
+            voice.play(discord.FFmpegPCMAudio(filename))
+            # voice.play(discord.FFmpegPCMAudio(str(ffmpeg
+            #                                   .input(str(filename))
+            #                                   .output('output.mp3')
+            #                                  )))
         await ctx.send('**Now playing:** {}'.format(filename))
+
+# @client.command()
+# async def play(ctx):
+#     guild = ctx.guild
+#     voice_client: discord.VoiceClient = discord.utils.get(client.voice_clients, guild=guild)
+#     audio_source = discord.FFmpegPCMAudio('AHHH.mp3')
+#     if not voice_client.is_playing():
+#         voice_client.play(audio_source, after=None)
 
 @client.command(name="leave", help="Mista leaves...")
 async def leave(ctx):
@@ -126,5 +134,5 @@ async def stop(ctx):
     voice.stop()
 
 if __name__ == "__main__":
-    client.run(os.environ['TOKEN'])
+    client.run('ODMyNDMyMjQzNzU0NTMyODc0.YHjs8A.PcEKNIQrwYDAOc5kzJOA4V_DAKQ')
 
