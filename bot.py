@@ -56,6 +56,7 @@ async def on_ready():
 
 @client.command(name="ping")
 async def ping(ctx):
+    #Just addding this since heroku is a <REDACTED>
     await ctx.send(f"🏓 Pong with {str(round(client.latency, 2))}.")
 
 
