@@ -51,7 +51,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
 # Tester code batch
 @client.event
 async def on_ready():
-    await client.change_presence(status=discord.Status.idle, activity=discord.Game("Playing with #help"))
+    await client.change_presence(status=discord.Status.idle, activity=discord.Game("with +help"))
     print("Mista is online.")
 
 @client.command(name="ping")
@@ -134,5 +134,5 @@ async def stop(ctx):
     voice.stop()
 
 if __name__ == "__main__":
-    client.run('ODMyNDMyMjQzNzU0NTMyODc0.YHjs8A.PcEKNIQrwYDAOc5kzJOA4V_DAKQ')
+    client.run(os.environ['TOKEN']) 
 
