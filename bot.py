@@ -5,7 +5,7 @@ import asyncio
 import os
 import youtube_dl
 
-client = commands.Bot(command_prefix= '#')
+client = commands.Bot(command_prefix= '+')
 
 # Setting up YouTube-DL settings
 youtube_dl.utils.bug_reports_message = lambda: ''
