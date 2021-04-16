@@ -4,6 +4,7 @@ from discord.ext import commands, tasks
 import asyncio
 import os
 import youtube_dl
+import ffmpeg
 
 client = commands.Bot(command_prefix= '+')
 
@@ -86,8 +87,12 @@ async def play(ctx, url : str):
     else:
         async with ctx.typing():
             filename = await YTDLSource.from_url(url, loop=client.loop)
-            voice.play(discord.FFmpegPCMAudio(
-                executable="ffmpeg.exe", source=filename))
+            # voice.play(discord.FFmpegPCMAudio(
+            #     executable="ffmpeg.exe", source=filename))
+            voice.play(discord.FFmpegPCMAudio(ffmpeg
+                                              .input(filename)
+                                              .output('out.mp4', **{'qscale:v': 3})
+                                              .run()))
         await ctx.send('**Now playing:** {}'.format(filename))
 
 @client.command(name="leave", help="Mista leaves...")
