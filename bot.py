@@ -4,7 +4,6 @@ from discord.ext import commands, tasks
 import asyncio
 import os
 import youtube_dl
-import ffmpeg
 
 client = commands.Bot(command_prefix= '+')
 
@@ -88,14 +87,10 @@ async def play(ctx, url : str):
     else:
         async with ctx.typing():
             filename = await YTDLSource.from_url(url, loop=client.loop)
-            #voice.play(discord.FFmpegPCMAudio(, source=filename))
             voice.play(discord.FFmpegPCMAudio(filename))
-            # voice.play(discord.FFmpegPCMAudio(str(ffmpeg
-            #                                   .input(str(filename))
-            #                                   .output('output.mp3')
-            #                                  )))
         await ctx.send('**Now playing:** {}'.format(filename))
 
+# LOCAL CODE TESTING
 # @client.command()
 # async def play(ctx):
 #     guild = ctx.guild
@@ -134,5 +129,11 @@ async def stop(ctx):
     voice.stop()
 
 if __name__ == "__main__":
+    # FOR LOCAL TESTING
+    # f = open("mista_token.txt", "r")
+    # token = f.read()
+    # client.run(token)
+
+    #HEROKU
     client.run(os.environ['TOKEN']) 
 
