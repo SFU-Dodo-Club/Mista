@@ -79,19 +79,22 @@ async def clear(ctx, amount=3):
 @client.command(name="join", help="Mista joins the party!")
 async def join(ctx):
     if not ctx.message.author.voice:
-        await ctx.send("Mista thinks **{}** is not connected to a voice channel! :(".format(ctx.message.author.name))
+        await ctx.send("Mista thinks {} is not connected to a voice channel! :(".format(ctx.message.author.name))
         return
     else:
         channel = ctx.message.author.voice.channel
+        await ctx.send(f"Connecting to {channel}")
     await channel.connect()
 
-@client.command(name="play", help="Mista starts playing! +play 'song_url'")
+@client.command(name="play", help="Mista starts playing! #play 'song_url'")
 async def play(ctx, url : str):
     voice_channel = discord.utils.get(ctx.guild.voice_channels)
     voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
-    if not voice.is_connected():
-        # await ctx.send(f"Mista wasn't connected :sad:, connecting to **{voice_channel}**!")
-        await voice_channel.connect()
+    if voice is None:
+        await ctx.send(f"Mista is connecting... {str(voice_channel)}")
+        await join(ctx)
+        await play(ctx, url)
+
     else:
         async with ctx.typing():
             filename = await YTDLSource.from_url(url, loop=client.loop)
