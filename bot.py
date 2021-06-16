@@ -132,10 +132,10 @@ async def stop(ctx):
 
 if __name__ == "__main__":
     # FOR LOCAL TESTING
-    f = open("mista_token.txt", "r")
-    token = f.read()
-    client.run(token)
+    # f = open("mista_token.txt", "r")
+    # token = f.read()
+    # client.run(token)
 
     #HEROKU
-    # client.run(os.environ['TOKEN']) 
+    client.run(os.environ['TOKEN'])
 
