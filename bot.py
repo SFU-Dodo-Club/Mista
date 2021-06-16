@@ -35,8 +35,15 @@ class YTDLSource(discord.PCMVolumeTransformer):
         super().__init__(source, volume)
         self.data = data
         self.title = data.get('title')
-        self.url = ""
+        self.url = data.get('url')
+        self.thumbnail = data.get('thumbnail')
+        self.duration = data.get('duration')
+        self.views = data.get('view_count')
+        self.playlist = {}
 
+    """
+        Downloading YouTube song data
+    """
     @classmethod
     async def from_url(cls, url, *, loop=None, stream=False):
         loop = loop or asyncio.get_event_loop()
@@ -44,6 +51,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         if 'entries' in data:
             # take first item from a playlist
             data = data['entries'][0]
+            print(data)
         filename = data['title'] if stream else ytdl.prepare_filename(data)
         return filename
 
@@ -68,30 +76,27 @@ async def clear(ctx, amount=3):
     await ctx.channel.purge(limit=amount)
 
 # Actual music playing code
-# Actual music playing code
 @client.command(name="join", help="Mista joins the party!")
 async def join(ctx):
     if not ctx.message.author.voice:
-        await ctx.send("Mista thinks {} is not connected to a voice channel! :(".format(ctx.message.author.name))
+        await ctx.send("Mista thinks **{}** is not connected to a voice channel! :(".format(ctx.message.author.name))
         return
     else:
         channel = ctx.message.author.voice.channel
-        await ctx.send(f"Connecting to {channel}")
     await channel.connect()
 
-@client.command(name="play", help="Mista starts playing! #play 'song_url'")
+@client.command(name="play", help="Mista starts playing! +play 'song_url'")
 async def play(ctx, url : str):
     voice_channel = discord.utils.get(ctx.guild.voice_channels)
     voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
-    if voice is None:
-        await ctx.send(f"Mista is connecting... {str(voice_channel)}")
-        await join(ctx)
+    if not voice.is_connected():
+        # await ctx.send(f"Mista wasn't connected :sad:, connecting to **{voice_channel}**!")
+        await voice_channel.connect()
     else:
         async with ctx.typing():
             filename = await YTDLSource.from_url(url, loop=client.loop)
             voice.play(discord.FFmpegPCMAudio(filename))
         await ctx.send('**Now playing:** {}'.format(filename))
-
 
 @client.command(name="leave", help="Mista leaves...")
 async def leave(ctx):
@@ -124,10 +129,10 @@ async def stop(ctx):
 
 if __name__ == "__main__":
     # FOR LOCAL TESTING
-    # f = open("mista_token.txt", "r")
-    # token = f.read()
-    #client.run('')
+    f = open("mista_token.txt", "r")
+    token = f.read()
+    client.run(token)
 
     #HEROKU
-    client.run(os.environ['TOKEN'])
+    # client.run(os.environ['TOKEN']) 
 
