@@ -68,6 +68,7 @@ async def clear(ctx, amount=3):
     await ctx.channel.purge(limit=amount)
 
 # Actual music playing code
+# Actual music playing code
 @client.command(name="join", help="Mista joins the party!")
 async def join(ctx):
     if not ctx.message.author.voice:
@@ -125,8 +126,8 @@ if __name__ == "__main__":
     # FOR LOCAL TESTING
     # f = open("mista_token.txt", "r")
     # token = f.read()
-    client.run('ODMyNDMyMjQzNzU0NTMyODc0.YHjs8A.YZS6YMV03RSpytZow44gQybskzs')
+    #client.run('')
 
     #HEROKU
-    #client.run(os.environ['TOKEN'])
+    client.run(os.environ['TOKEN'])
 
