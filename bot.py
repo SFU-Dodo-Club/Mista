@@ -75,29 +75,22 @@ async def join(ctx):
         return
     else:
         channel = ctx.message.author.voice.channel
+        await ctx.send(f"Connecting to {channel}")
     await channel.connect()
 
 @client.command(name="play", help="Mista starts playing! #play 'song_url'")
 async def play(ctx, url : str):
     voice_channel = discord.utils.get(ctx.guild.voice_channels)
-    voice = discord.utils.get(client.voice_clients, guild = ctx.guild)
-    if not voice.is_connected():
-        await ctx.send("Mista is playing!")
-        await voice_channel.connect()
+    voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
+    if voice is None:
+        await ctx.send(f"Mista is connecting... {str(voice_channel)}")
+        await join(ctx)
     else:
         async with ctx.typing():
             filename = await YTDLSource.from_url(url, loop=client.loop)
             voice.play(discord.FFmpegPCMAudio(filename))
         await ctx.send('**Now playing:** {}'.format(filename))
 
-# LOCAL CODE TESTING
-# @client.command()
-# async def play(ctx):
-#     guild = ctx.guild
-#     voice_client: discord.VoiceClient = discord.utils.get(client.voice_clients, guild=guild)
-#     audio_source = discord.FFmpegPCMAudio('AHHH.mp3')
-#     if not voice_client.is_playing():
-#         voice_client.play(audio_source, after=None)
 
 @client.command(name="leave", help="Mista leaves...")
 async def leave(ctx):
@@ -132,8 +125,8 @@ if __name__ == "__main__":
     # FOR LOCAL TESTING
     # f = open("mista_token.txt", "r")
     # token = f.read()
-    # client.run(token)
+    client.run('ODMyNDMyMjQzNzU0NTMyODc0.YHjs8A.YZS6YMV03RSpytZow44gQybskzs')
 
     #HEROKU
-    client.run(os.environ['TOKEN']) 
+    #client.run(os.environ['TOKEN'])
 
